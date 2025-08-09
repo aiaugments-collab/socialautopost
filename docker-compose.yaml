@@ -3,9 +3,9 @@ services:
     build: .
     container_name: postiz-app
     restart: always
-    ports:
-      - "80:80"
-      - "3000:3000"
+    expose:
+      - "80"
+      - "3000"
     environment:
       - DATABASE_URL=postgresql://postiz-user:${POSTGRES_PASSWORD}@postiz-postgres:5432/postiz-db
       - REDIS_URL=redis://postiz-redis:6379
@@ -31,8 +31,6 @@ services:
       POSTGRES_DB: postiz-db
     volumes:
       - postgres-volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - postiz-network
 
@@ -40,8 +38,6 @@ services:
     image: redis:7-alpine
     container_name: postiz-redis
     restart: always
-    ports:
-      - "6379:6379"
     networks:
       - postiz-network
 
