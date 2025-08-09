@@ -1,12 +1,14 @@
 # Configuration reference: http://docs.postiz.com/configuration/reference
 
 # === Required Settings
-DATABASE_URL="postgresql://postiz-user:postiz-password@localhost:5432/postiz-db-local"
-REDIS_URL="redis://localhost:6379"
-JWT_SECRET="random string for your JWT secret, make it long"
+DATABASE_URL="postgresql://neondb_owner:npg_rxycT0IA3evE@ep-divine-mountain-aehze0js-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require"
+REDIS_URL="redis://default:AYMrAAIjcDFkZTFjMWJjY2E4M2Y0NDIyOGRlMDYwYTIxNzUyOTJkNnAxMA@tender-sculpin-33579.upstash.io:6379"
+JWT_SECRET="postiz-jwt-secret-2025-very-long-random-string-for-production-security-purposes"
+REFRESH_JWT_SECRET="postiz-refresh-jwt-secret-2025-even-longer-random-string-for-refresh-token-security"
 
 # === This needs to be exactly the URL you're accessing Postiz on
 FRONTEND_URL="http://localhost:4200"
+NEXT_PUBLIC_FRONTEND_URL="http://localhost:4200"
 NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
 BACKEND_INTERNAL_URL="http://localhost:3000"
 
