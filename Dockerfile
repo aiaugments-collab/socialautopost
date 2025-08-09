@@ -11,16 +11,9 @@ RUN npm --no-update-notifier --no-fund --global install pnpm@10.6.1 pm2
 
 WORKDIR /app
 
-COPY package*.json pnpm-*.yaml ./
-COPY libraries/nestjs-libraries/package*.json ./libraries/nestjs-libraries/
-COPY apps/backend/package*.json ./apps/backend/
-COPY apps/frontend/package*.json ./apps/frontend/
-COPY apps/workers/package*.json ./apps/workers/
-COPY apps/cron/package*.json ./apps/cron/
-
-RUN pnpm install --frozen-lockfile
-
 COPY . .
+
+RUN pnpm install --no-frozen-lockfile
 COPY var/docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
