@@ -1,0 +1,173 @@
+version: '3.8'
+
+services:
+  postiz:
+    build: .
+    container_name: postiz
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      # === Core Application Settings ===
+      NODE_ENV: "production"
+      IS_GENERAL: "true"
+      
+      # === URLs - Auto-configured by Coolify ===
+      FRONTEND_URL: "https://${COOLIFY_FQDN}"
+      NEXT_PUBLIC_FRONTEND_URL: "https://${COOLIFY_FQDN}"
+      BACKEND_URL: "https://${COOLIFY_FQDN}/api"
+      NEXT_PUBLIC_BACKEND_URL: "https://${COOLIFY_FQDN}/api"
+      BACKEND_INTERNAL_URL: "http://localhost:3000"
+      
+      # === Database - Neon PostgreSQL ===
+      DATABASE_URL: "${DATABASE_URL:-postgresql://neondb_owner:npg_rxycT0IA3evE@ep-divine-mountain-aehze0js-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require}"
+      
+      # === Redis - Upstash Redis ===
+      REDIS_URL: "${REDIS_URL:-redis://default:AYMrAAIjcDFkZTFjMWJjY2E4M2Y0NDIyOGRlMDYwYTIxNzUyOTJkNnAxMA@tender-sculpin-33579.upstash.io:6379}"
+      
+      # === Security (Generate secure values) ===
+      JWT_SECRET: "${JWT_SECRET:-change-this-to-a-secure-random-string-minimum-32-characters-long}"
+      REFRESH_JWT_SECRET: "${REFRESH_JWT_SECRET:-change-this-to-another-secure-random-string-minimum-32-characters}"
+      
+      # === File Storage ===
+      STORAGE_PROVIDER: "local"
+      UPLOAD_DIRECTORY: "/uploads"
+      NEXT_PUBLIC_UPLOAD_STATIC_DIRECTORY: "/uploads"
+      
+      # === Email Configuration - Resend.com ===
+      RESEND_API_KEY: "${RESEND_API_KEY:-re_PyKzVM9q_9hGdY6evU82WJFir7ZHZGjTD}"
+      EMAIL_FROM_ADDRESS: "${EMAIL_FROM_ADDRESS:-noreply@yourdomain.com}"
+      EMAIL_FROM_NAME: "${EMAIL_FROM_NAME:-Postiz}"
+      
+      # === Registration Settings ===
+      DISABLE_REGISTRATION: "${DISABLE_REGISTRATION:-false}"
+      
+      # === Cloudflare R2 Storage (Optional but recommended for production) ===
+      CLOUDFLARE_ACCOUNT_ID: "${CLOUDFLARE_ACCOUNT_ID:-}"
+      CLOUDFLARE_ACCESS_KEY: "${CLOUDFLARE_ACCESS_KEY:-}"
+      CLOUDFLARE_SECRET_ACCESS_KEY: "${CLOUDFLARE_SECRET_ACCESS_KEY:-}"
+      CLOUDFLARE_BUCKETNAME: "${CLOUDFLARE_BUCKETNAME:-}"
+      CLOUDFLARE_BUCKET_URL: "${CLOUDFLARE_BUCKET_URL:-}"
+      CLOUDFLARE_REGION: "auto"
+      
+      # === Social Media Platform API Keys (Configure as needed) ===
+      # Twitter/X
+      X_API_KEY: "${X_API_KEY:-}"
+      X_API_SECRET: "${X_API_SECRET:-}"
+      
+      # LinkedIn
+      LINKEDIN_CLIENT_ID: "${LINKEDIN_CLIENT_ID:-}"
+      LINKEDIN_CLIENT_SECRET: "${LINKEDIN_CLIENT_SECRET:-}"
+      
+      # Reddit
+      REDDIT_CLIENT_ID: "${REDDIT_CLIENT_ID:-}"
+      REDDIT_CLIENT_SECRET: "${REDDIT_CLIENT_SECRET:-}"
+      
+      # GitHub
+      GITHUB_CLIENT_ID: "${GITHUB_CLIENT_ID:-}"
+      GITHUB_CLIENT_SECRET: "${GITHUB_CLIENT_SECRET:-}"
+      
+      # Facebook
+      FACEBOOK_APP_ID: "${FACEBOOK_APP_ID:-}"
+      FACEBOOK_APP_SECRET: "${FACEBOOK_APP_SECRET:-}"
+      
+      # YouTube
+      YOUTUBE_CLIENT_ID: "${YOUTUBE_CLIENT_ID:-}"
+      YOUTUBE_CLIENT_SECRET: "${YOUTUBE_CLIENT_SECRET:-}"
+      
+      # TikTok
+      TIKTOK_CLIENT_ID: "${TIKTOK_CLIENT_ID:-}"
+      TIKTOK_CLIENT_SECRET: "${TIKTOK_CLIENT_SECRET:-}"
+      
+      # Pinterest
+      PINTEREST_CLIENT_ID: "${PINTEREST_CLIENT_ID:-}"
+      PINTEREST_CLIENT_SECRET: "${PINTEREST_CLIENT_SECRET:-}"
+      
+      # Discord
+      DISCORD_CLIENT_ID: "${DISCORD_CLIENT_ID:-}"
+      DISCORD_CLIENT_SECRET: "${DISCORD_CLIENT_SECRET:-}"
+      DISCORD_BOT_TOKEN_ID: "${DISCORD_BOT_TOKEN_ID:-}"
+      
+      # Slack
+      SLACK_ID: "${SLACK_ID:-}"
+      SLACK_SECRET: "${SLACK_SECRET:-}"
+      SLACK_SIGNING_SECRET: "${SLACK_SIGNING_SECRET:-}"
+      
+      # Mastodon
+      MASTODON_URL: "${MASTODON_URL:-https://mastodon.social}"
+      MASTODON_CLIENT_ID: "${MASTODON_CLIENT_ID:-}"
+      MASTODON_CLIENT_SECRET: "${MASTODON_CLIENT_SECRET:-}"
+      
+      # Threads
+      THREADS_APP_ID: "${THREADS_APP_ID:-}"
+      THREADS_APP_SECRET: "${THREADS_APP_SECRET:-}"
+      
+      # Dribbble
+      DRIBBBLE_CLIENT_ID: "${DRIBBBLE_CLIENT_ID:-}"
+      DRIBBBLE_CLIENT_SECRET: "${DRIBBBLE_CLIENT_SECRET:-}"
+      
+      # === AI and External Services ===
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      
+      # === Payment Settings (Stripe) ===
+      STRIPE_PUBLISHABLE_KEY: "${STRIPE_PUBLISHABLE_KEY:-}"
+      STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-}"
+      STRIPE_SIGNING_KEY: "${STRIPE_SIGNING_KEY:-}"
+      STRIPE_SIGNING_KEY_CONNECT: "${STRIPE_SIGNING_KEY_CONNECT:-}"
+      FEE_AMOUNT: "${FEE_AMOUNT:-0.05}"
+      
+      # === API Rate Limiting ===
+      API_LIMIT: "${API_LIMIT:-30}"
+      
+      # === Development/Build Settings ===
+      NX_ADD_PLUGINS: "false"
+      
+      # === Generic OAuth (Optional) ===
+      POSTIZ_GENERIC_OAUTH: "${POSTIZ_GENERIC_OAUTH:-false}"
+      NEXT_PUBLIC_POSTIZ_OAUTH_DISPLAY_NAME: "${NEXT_PUBLIC_POSTIZ_OAUTH_DISPLAY_NAME:-}"
+      NEXT_PUBLIC_POSTIZ_OAUTH_LOGO_URL: "${NEXT_PUBLIC_POSTIZ_OAUTH_LOGO_URL:-}"
+      POSTIZ_OAUTH_URL: "${POSTIZ_OAUTH_URL:-}"
+      POSTIZ_OAUTH_AUTH_URL: "${POSTIZ_OAUTH_AUTH_URL:-}"
+      POSTIZ_OAUTH_TOKEN_URL: "${POSTIZ_OAUTH_TOKEN_URL:-}"
+      POSTIZ_OAUTH_USERINFO_URL: "${POSTIZ_OAUTH_USERINFO_URL:-}"
+      POSTIZ_OAUTH_CLIENT_ID: "${POSTIZ_OAUTH_CLIENT_ID:-}"
+      POSTIZ_OAUTH_CLIENT_SECRET: "${POSTIZ_OAUTH_CLIENT_SECRET:-}"
+      
+      # === Short Link Services (Optional) ===
+      DUB_TOKEN: "${DUB_TOKEN:-}"
+      DUB_API_ENDPOINT: "${DUB_API_ENDPOINT:-https://api.dub.co}"
+      DUB_SHORT_LINK_DOMAIN: "${DUB_SHORT_LINK_DOMAIN:-dub.sh}"
+      
+      SHORT_IO_SECRET_KEY: "${SHORT_IO_SECRET_KEY:-}"
+      
+      KUTT_API_KEY: "${KUTT_API_KEY:-}"
+      KUTT_API_ENDPOINT: "${KUTT_API_ENDPOINT:-https://kutt.it/api/v2}"
+      KUTT_SHORT_LINK_DOMAIN: "${KUTT_SHORT_LINK_DOMAIN:-kutt.it}"
+      
+      LINK_DRIP_API_KEY: "${LINK_DRIP_API_KEY:-}"
+      LINK_DRIP_API_ENDPOINT: "${LINK_DRIP_API_ENDPOINT:-https://api.linkdrip.com/v1/}"
+      LINK_DRIP_SHORT_LINK_DOMAIN: "${LINK_DRIP_SHORT_LINK_DOMAIN:-dripl.ink}"
+      
+      # === Analytics and Support ===
+      NEXT_PUBLIC_DISCORD_SUPPORT: "${NEXT_PUBLIC_DISCORD_SUPPORT:-}"
+      NEXT_PUBLIC_POLOTNO: "${NEXT_PUBLIC_POLOTNO:-}"
+      
+    volumes:
+      - uploads:/uploads
+    
+    labels:
+      # Coolify specific labels
+      - "coolify.managed=true"
+      - "coolify.port=80"
+      - "coolify.name=postiz"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/api/health", "||", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+volumes:
+  uploads:
+    driver: local
