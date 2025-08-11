@@ -6,7 +6,7 @@ import {
   useWallet,
   WalletProvider as WalletProviderWrapper,
 } from '@solana/wallet-adapter-react';
-import { useWalletMultiButton } from '@solana/wallet-adapter-react-ui';
+// useWalletMultiButton is not available in this version, we'll use useWallet directly
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   TorusWalletAdapter,
@@ -123,11 +123,20 @@ const InnerWallet = () => {
   const walletModal = useWalletModal();
   const wallet = useWallet();
   const fetch = useFetch();
-  const { buttonState } = useWalletMultiButton({
-    onSelectWallet: () => {
-      return;
-    },
-  });
+  
+  // Determine button state based on wallet connection status
+  const getButtonState = () => {
+    if (wallet.connected && wallet.publicKey) {
+      return 'connected';
+    } else if (wallet.wallet) {
+      return 'has-wallet';
+    } else {
+      return 'no-wallet';
+    }
+  };
+  
+  const buttonState = getButtonState();
+  
   const connect = useCallback(async () => {
     if (buttonState !== 'connected') {
       return;
@@ -156,9 +165,10 @@ const InnerWallet = () => {
         /** empty */
       });
     }
-  }, [wallet, buttonState]);
+  }, [wallet, buttonState, fetch, walletModal]);
+  
   useEffect(() => {
-    if (buttonState === 'has-wallet') {
+    if (buttonState === 'has-wallet' && !wallet.connected) {
       wallet
         .connect()
         .then(() => {
@@ -172,7 +182,8 @@ const InnerWallet = () => {
     if (buttonState === 'connected') {
       connect();
     }
-  }, [buttonState]);
+  }, [buttonState, wallet, connect]);
+  
   return (
     <div onClick={() => walletModal.setVisible(true)}>
       <WalletUiProvider />
