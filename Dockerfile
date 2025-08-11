@@ -30,11 +30,19 @@ COPY package.json pnpm-*.yaml ./
 COPY apps/*/package.json apps/*/
 COPY libraries/*/package.json libraries/*/
 
-# Install dependencies
+# Copy the entire libraries directory structure (needed for Prisma schema and postinstall script)
+COPY libraries/ ./libraries/
+
+# Install dependencies (this will run postinstall script which needs Prisma schema)
 RUN pnpm install --no-frozen-lockfile
 
-# Copy source code
-COPY . .
+# Copy the rest of the source code
+COPY apps/ ./apps/
+COPY var/ ./var/
+COPY tsconfig.*.json ./
+COPY *.json ./
+COPY *.js ./
+COPY *.ts ./
 
 # Copy nginx configuration
 COPY var/docker/nginx.conf /etc/nginx/nginx.conf
