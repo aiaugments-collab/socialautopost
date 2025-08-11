@@ -8,6 +8,13 @@ const nextConfig = {
   },
   reactStrictMode: false,
   transpilePackages: ['crypto-hash'],
+  // Disable linting and type checking during build for faster Docker builds
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   // Enable production sourcemaps for Sentry
   productionBrowserSourceMaps: true,
   

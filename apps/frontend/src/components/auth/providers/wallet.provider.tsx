@@ -7,12 +7,7 @@ import {
   WalletProvider as WalletProviderWrapper,
 } from '@solana/wallet-adapter-react';
 // useWalletMultiButton is not available in this version, we'll use useWallet directly
-// WalletAdapterNetwork enum definition
-const WalletAdapterNetwork = {
-  Mainnet: 'mainnet-beta',
-  Testnet: 'testnet',
-  Devnet: 'devnet'
-} as const;
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   TorusWalletAdapter,
   BitgetWalletAdapter,
