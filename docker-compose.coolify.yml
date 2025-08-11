@@ -2,11 +2,22 @@ version: '3.8'
 
 services:
   postiz:
-    build: .
+    build: 
+      context: .
+      args:
+        NEXT_PUBLIC_VERSION: "1.0.0"
     container_name: postiz
     restart: unless-stopped
     ports:
       - "80:80"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.5'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
     environment:
       # === Core Application Settings ===
       NODE_ENV: "production"
